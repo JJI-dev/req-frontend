@@ -5,7 +5,7 @@ import CursorAnimation from "@/components/CursorAnimation"; // 추가
 export const metadata: Metadata = {
   title: "Project Request | JJI",
   description: "JJI, NE, MO 프로젝트 의뢰하기",
-  icons: { icon: "/favicon.ico" },
+  icons: { icon: "/icon.svg" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
