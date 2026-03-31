@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Vercel 빌드 시 에러가 나지 않도록 방어 코드 (|| 'fallback') 추가함요 
+const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_key_for_build');
 
 export async function POST(request: Request) {
   try {
