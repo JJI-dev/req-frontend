@@ -1,0 +1,51 @@
+@import "tailwindcss";
+/* 텍스트 드래그 시 색상 반전 효과 (디자인 디테일) */
+::selection {
+  background-color: #000;
+  color: #fff;
+}
+
+body {
+  background-color: #ffffff;
+  color: #000000;
+  letter-spacing: -0.04em !important;
+  cursor: none;
+}
+
+a, button, [role="button"], input, textarea, label {
+cursor: none !important;
+}
+
+.cursor-dot, .cursor-ring {
+position: fixed;
+pointer-events: none;
+transform: translate(-50%, -50%);
+z-index: 9999;
+transition: opacity 0.3s ease;
+}
+
+.cursor-dot {
+width: 8px;
+height: 8px;
+background: black;
+border-radius: 50%;
+}
+
+.cursor-ring {
+width: 40px;
+height: 40px;
+border: 1.5px solid black;
+border-radius: 50%;
+transition: width 0.2s ease-out, height 0.2s ease-out, background 0.2s ease-out, border-color 0.2s ease-out;
+}
+
+.cursor-dot.hovered {
+opacity: 0;
+}
+
+.cursor-ring.hovered {
+width: 60px;
+height: 60px;
+background: rgba(0, 0, 0, 0.05);
+border-color: transparent;
+}
