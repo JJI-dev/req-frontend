@@ -289,7 +289,7 @@ export default function RequestForm() {
               </h1>
               <div className="text-gray-400 text-sm space-y-1">
                 <p>검토 후 3~4일 이내 연락드리겠습니다.</p>
-                <p>문의 메일 : Contact@jji.kr</p>
+                <p>문의 메일 : contact@jji.kr</p>
               </div>
             </div>
 
