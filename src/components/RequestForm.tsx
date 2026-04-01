@@ -27,7 +27,7 @@ type Theme = {
 };
 
 const getHighlightedText = (title: string, colorClass: string) => {
-  const keywords = ["어떤 프로젝트를", "어떤 서비스를", "이름을", "착수일이", "예산범위를", "정보를", "담당자의"];
+  const keywords = ["어떤 프로젝트", "어떤 서비스", "이름", "착수일", "예산범위", "정보", "담당자"];
   let result = <>{title}</>;
   keywords.forEach(keyword => {
     if (title.includes(keyword)) {
@@ -399,7 +399,7 @@ export default function RequestForm() {
                               >
                                 <input 
                                   type="text" 
-                                  placeholder="서비스를 입력해 주세요." 
+                                  placeholder="프로젝트를 입력해 주세요." 
                                   className="w-full border-b border-gray-300 py-2 outline-none focus:border-black transition-colors" 
                                   ref={setRef(`${q.id}_etc`)}
                                   onChange={(e) => updateData(`${q.id}_etc`, e.target.value)}
@@ -552,7 +552,7 @@ export default function RequestForm() {
             <h1 className="text-4xl md:text-5xl font-bold mb-8">성공적으로 접수 완료되었습니다!</h1>
             <div className="text-gray-400 mb-16 space-y-2">
               <p>검토 후 3~4일 이내 연락드리겠습니다.</p>
-              <p>문의 메일 : Contact@jji.kr</p>
+              <p>문의 메일 : contact@jji.kr</p>
             </div>
             <p className="font-bold mb-12">작성하신 요청 내용이 입력하신 이메일로 함께 발송되었습니다.</p>
             
