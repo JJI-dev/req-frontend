@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://req.jji.kr
+
+# Sitemaps
+Sitemap: https://req.jji.kr/sitemap.xml
