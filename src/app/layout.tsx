@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Project Request | JJI",
   description: "JJI, NE, MO 프로젝트 의뢰하기",
   icons: { icon: "/icon.svg" },
+  alternates: {
+    canonical: 'https://req.jji.kr', 
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
