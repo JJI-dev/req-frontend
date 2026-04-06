@@ -90,7 +90,7 @@ export default function RequestForm() {
   };
 
   const handleSubmit = async () => {
-    if (!formData.contact_name?.trim() || !formData.contact_phone?.trim() || !formData.contact_email?.trim()) {
+    if (!formData.contact_name?.trim() || !formData.contact_email?.trim()) {
       displayToast("담당자 정보를 모두 입력해 주세요!");
       return;
     }
@@ -139,7 +139,7 @@ export default function RequestForm() {
   const isComplete = 
     formData.contact_name?.trim() && 
     formData.contact_email?.trim() && 
-    formData.contact_phone?.trim() && // 연락처도 필수로 추가
+    // formData.contact_phone?.trim() && // 연락처도 필수로 추가
     formData.privacy_agree === true;
   const progressPercentage = type ? Math.min(100, ((visibleStep + 1) / QUESTIONS[type].items.length) * 100) : 0;
 

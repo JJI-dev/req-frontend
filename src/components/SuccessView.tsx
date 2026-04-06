@@ -7,8 +7,8 @@ export default function SuccessView() {
 
   return (
     <main className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white text-black p-6 overflow-hidden">
-      <div className="absolute top-[10%] right-[10%] w-[300px] h-[300px] rounded-full bg-[#3A86FF]/10 blur-[80px] pointer-events-none"></div>
-      <div className="absolute bottom-[10%] left-[10%] w-[350px] h-[350px] rounded-full bg-[#FB4C4C]/10 blur-[100px] pointer-events-none"></div>
+      <div className="absolute top-[10%] right-[10%] w-[300px] h-[300px] rounded-full bg-[#3A86FF]/10 blur-[70px] pointer-events-none"></div>
+      <div className="absolute bottom-[10%] left-[10%] w-[350px] h-[350px] rounded-full bg-[#FB4C4C]/10 blur-[70px] pointer-events-none"></div>
 
       <motion.div className="text-center flex flex-col items-center z-10 w-full" initial="hidden" animate="visible" variants={containerVariants}>
         <motion.h1 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-8 leading-tight">성공적으로 <br/> 접수 완료되었습니다!</motion.h1>

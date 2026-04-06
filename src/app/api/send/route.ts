@@ -14,14 +14,15 @@ export async function POST(request: Request) {
       fileData, fileName 
     } = formData;
 
-    // 이메일 유효성 검사
     if (!contact_email || !contact_email.includes('@')) {
       return NextResponse.json({ error: '유효한 이메일 주소를 입력해주세요.' }, { status: 400 });
     }
 
     const category = type === 'creative' ? '창작' : '제품';
-    const displayTitle = name || service; 
-    const dateRange = `${date_start || ''} ~ ${date_end || ''}`;
+    const displayTitle = name || service || '제목 없음'; 
+    const dateRange = (date_start || date_end) 
+  ? `${date_start || '미정'} ~ ${date_end || '미정'}` 
+  : '미정';
     const pointColor = type === 'creative' ? '#FB4C4C' : '#3A86FF';
     const destinationEmail = type === 'creative' ? 'ne@jji.kr' : 'mo@jji.kr';
 
@@ -38,23 +39,21 @@ export async function POST(request: Request) {
       } catch (e) { console.error("Blob 업로드 실패"); }
     }
 
-    // 2. Postgres DB 저장
+    // 2. Postgres DB 저장 (service 추가)
     try {
       await sql`
-        INSERT INTO requests (type, client_name, phone, email, title, content, date_range, budget, file_url)
-        VALUES (${category}, ${contact_name}, ${contact_phone || ''}, ${contact_email}, ${displayTitle}, ${info || ''}, ${dateRange}, ${budget || '협의'}, ${fileUrl})
+        INSERT INTO requests (type, service, client_name, phone, email, title, content, date_range, budget, file_url)
+        VALUES (${category}, ${service || ''}, ${contact_name}, ${contact_phone || ''}, ${contact_email}, ${displayTitle}, ${info || ''}, ${dateRange}, ${budget || '협의'}, ${fileUrl})
       `;
-    } catch (e) { console.error("DB 저장 실패"); }
+    } catch (e) { console.error("DB 저장 실패", e); }
 
-    // 3. 이메일 템플릿 (사라졌던 하단 모든 요소 복구)
+    // 3. 이메일 템플릿
     const emailHtml = `
       <div style="background-color: #ffffff; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', Pretendard, sans-serif; color: #191F28;">
         <div style="max-width: 800px; margin: 0 auto; border-radius: 16px; border: 2px solid #f9fafb; background-color: #ffffff;">
-          
           <div style="padding: 40px 40px 20px 40px; text-align: left;">
-            <img src="https://jji.kr/logo.png" alt="JJI Logo" width="89" height="31" style="display: block;" />
+            <img src="https://req.jji.kr/logo.png" alt="JJI Logo" width="89" height="31" style="display: block;" />
           </div>
-
           <div style="padding: 0 40px 40px 40px;">
             <p style="font-size: 16px; line-height: 1.6; color: #4E5968; margin-bottom: 40px;">
               안녕하세요, <strong>${contact_name}</strong>님.<br/><br/>
@@ -69,17 +68,18 @@ export async function POST(request: Request) {
 
             <table style="width: 100%; border-collapse: collapse; font-size: 15px; text-align: left; line-height: 1.6;">
               <tr><td style="padding: 0 0 16px 0; color: #8B95A1; width: 120px;">유형</td><td style="padding: 0 0 16px 0; color: #333D4B; font-weight: 600;">${category}</td></tr>
+              <tr><td style="padding: 0 0 16px 0; color: #8B95A1;">서비스</td><td style="padding: 0 0 16px 0; color: #333D4B;">${service || '미선택'}</td></tr>
               <tr><td style="padding: 0 0 16px 0; color: #8B95A1;">프로젝트명</td><td style="padding: 0 0 16px 0; color: #333D4B;">${displayTitle}</td></tr>
               <tr><td style="padding: 0 0 16px 0; color: #8B95A1;">의뢰인</td><td style="padding: 0 0 16px 0; color: #333D4B;">${contact_name}</td></tr>
-              <tr><td style="padding: 0 0 16px 0; color: #8B95A1;">연락처</td><td style="padding: 0 0 16px 0; color: #333D4B;">${contact_phone}</td></tr>
+              <tr><td style="padding: 0 0 16px 0; color: #8B95A1;">연락처</td><td style="padding: 0 0 16px 0; color: #333D4B;">${contact_phone || '미기재'}</td></tr>
               <tr><td style="padding: 0 0 16px 0; color: #8B95A1;">이메일</td><td style="padding: 0 0 16px 0; color: #333D4B;"><a href="mailto:${contact_email}" style="color: ${pointColor}; text-decoration: none;">${contact_email}</a></td></tr>
               <tr><td style="padding: 0 0 16px 0; color: #8B95A1;">일정</td><td style="padding: 0 0 16px 0; color: #333D4B;">${dateRange}</td></tr>
-              <tr><td style="padding: 0 0 32px 0; color: #8B95A1;">예산</td><td style="padding: 0 0 32px 0; color: #333D4B;">${budget}</td></tr>
+              <tr><td style="padding: 0 0 32px 0; color: #8B95A1;">예산</td><td style="padding: 0 0 32px 0; color: #333D4B;">${budget || '미선택'}</td></tr>
             </table>
 
             <div style="margin-top: 40px; padding: 30px; background-color: #F9FAFB; border-radius: 12px; border: 1px solid #eaeaea;">
               <h3 style="margin: 0 0 16px 0; font-size: 15px; color: #4E5968; font-weight: 600;">상세 내용</h3>
-              <p style="margin: 0; color: #333D4B; line-height: 1.6; font-size: 15px; white-space: pre-wrap;">${info ? info : '내용 없음'}</p>
+              <p style="margin: 0; color: #333D4B; line-height: 1.6; font-size: 15px; white-space: pre-wrap;">${info ? info : '작성된 상세 내용이 없습니다.'}</p>
             </div>
 
             ${fileUrl !== '없음' && fileUrl !== '업로드 실패' ? `
@@ -112,7 +112,7 @@ export async function POST(request: Request) {
     const { error } = await resend.emails.send({
       from: 'JJI <no-reply@jji.kr>', 
       to: [destinationEmail, contact_email],
-      subject: `[JJI] ${contact_name}님, ${displayTitle} 의뢰가 성공적으로 접수되었습니다 💌`,
+      subject: `[JJI] ${contact_name}님, ${displayTitle} 의뢰가 접수되었습니다 💌`,
       html: emailHtml,
       attachments: attachments.length > 0 ? attachments : undefined, 
     });
