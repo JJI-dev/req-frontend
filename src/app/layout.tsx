@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import CursorAnimation from "@/components/CursorAnimation"; // 추가
 
+
 export const metadata: Metadata = {
   title: "Project Request | JJI",
   description: "JJI, NE, MO 프로젝트 의뢰하기",

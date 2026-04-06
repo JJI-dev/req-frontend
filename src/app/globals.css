@@ -5,11 +5,21 @@
   color: #fff;
 }
 
+html, body {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 body {
   background-color: #ffffff;
   color: #000000;
   letter-spacing: -0.04em !important;
   cursor: none;
+  overflow-x: hidden;
 }
 
 a, button, [role="button"], input, textarea, label {
